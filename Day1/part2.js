@@ -1025,8 +1025,8 @@ let strings = str.split("\n");
 for (let i = 0; i < strings.length; i++) {
     // threerznlrhtkjp23mtflmbrzq395three
     // oneight (edge case i cry)
-    for(const [key, value] of digits){
-        console.log(key,value)
+    for(const [key, value] of Object.entries(digits)){
+        strings[i] = strings[i].replace(key,value)
     }
     let parsed = strings[i].match(/\d/g);
     console.log(parsed)
