@@ -1024,9 +1024,13 @@ function wordsToNumber(strings){
 let strings = str.split("\n");
 for (let i = 0; i < strings.length; i++) {
     // threerznlrhtkjp23mtflmbrzq395three
-    let parsed = strings[i].match(/(?:one|two|three|four|five|six|seven|eight|nine|zero)|\d/g, "");
-
-    console.log(wordsToNumber(parsed));
+    // oneight (edge case i cry)
+    for(const [key, value] of digits){
+        console.log(key,value)
+    }
+    let parsed = strings[i].match(/\d/g);
+    console.log(parsed)
+    // console.log(wordsToNumber(parsed));
 }
 // let parsed = str.replace(/\D/g, "");
 // console.log(parsed);
