@@ -1,4 +1,4 @@
-let str = `threerznlrhtkjp23mtflmbrzq395three
+let input = `threerznlrhtkjp23mtflmbrzq395three
 9sevenvlttm
 3twochzbv
 mdxdlh5six5nqfld9bqzxdqxfour
@@ -998,45 +998,30 @@ qxbhjmmqsixfkfn36three6
 eightmkmdtvkctkvptsbckzpnkhpskdmp3
 six2twobgzsfsptlqnine42xtmdprjqc
 pxreightwo7`;
-let digits = {
-    "one" : 1,
-    "two" : 2,
-    "three" : 3,
-    "four" : 4,
-    "five" : 5,
-    "six" : 6,
-    "seven" : 7,
-    "eight" : 8,
-    "nine" : 9,
-    "zero" : 0,
-}
+let digits = [
+    "zero",
+    "one",
+    "two",
+    "three",
+    "four",
+    "five",
+    "six",
+    "seven",
+    "eight",
+    "nine"
+]
 
-function wordsToNumber(strings){
-    let Numbers = []
-    strings.forEach(string => {
-        if(digits[string]){
-            Numbers.push(digits[string]);
+let lines = input.split("\n");
+let code = 0;
+for(let string of lines){
+    let placedstring = string;
+    for(let digit = 0;digit<digits.length;digit++){
+        let matchedStrings = string.matchAll(digits[digit]); 
+        for(let matchString of matchedStrings){
+            placedstring = placedstring.substring(0,matchString.index) + digit + placedstring.substring(matchString.index+1);
         }
-    });
-    return Numbers
-}
-
-let strings = str.split("\n");
-for (let i = 0; i < strings.length; i++) {
-    // threerznlrhtkjp23mtflmbrzq395three
-    // oneight (edge case i cry)
-    for(const [key, value] of Object.entries(digits)){
-        strings[i] = strings[i].replace(key,value)
     }
-    let parsed = strings[i].match(/\d/g);
-    console.log(parsed)
-    // console.log(wordsToNumber(parsed));
+    let onlyDigits = placedstring.replace(/\D/g,"");
+    code += parseInt(onlyDigits.slice(0,1) + onlyDigits.slice(-1))
 }
-// let parsed = str.replace(/\D/g, "");
-// console.log(parsed);
-// for (let i = 0; i < parsed.length; i++) {
-//     if(digits[parsed[i]]){
-//         parsed[i] = digits[parsed[i]]
-//     }
-// }
-// console.log(parsed);
+console.log(code);
