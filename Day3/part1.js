@@ -1,6 +1,6 @@
 //pain
 const input =
-`12.......*..
+    `12.......*..
 +.........34
 .......-12..
 ..78........
@@ -12,7 +12,7 @@ const input =
 2.2......12.
 .*.........*
 1.1..503+.56`;
-
+//Solution 1
 //4361 sum of numbers adjacent to symbols excluding periods
 //ten a row
 //could lay out as line and check using math
@@ -20,41 +20,34 @@ const input =
 // make flexible real data is 140 chars a row
 // make a list of all possible part numbers positions and compare with directions
 // optimization is to stop when a number is found to prevent dupes. shrug?
-
-
-
-let parts = []
-let sum = 0;
-const rowLen = input.split("\n",1)[0].length
+//Solution 2
+//split into rows from each /n
+//split each string from the rows into seperate chars in the array
+//nested array (2dmatrix?)
+// [[1, 2, ., ., .*], [1, 2, ., ., .*],[1, 2, ., ., .*]]
+// actually what if i just ["1...2-1.","123.+2"]
 let directions = [
-    rowLen,
-    -rowLen,
-    1,
-    -1,
-    rowLen+1,
-    rowLen-1,
-    -rowLen-1,
-    -rowLen+1,
+    [0,1],
+    [0,-1],
+    [1,0],
+    [0,1],
+    [1,1],
+    [-1,1],
+    [1,-1],
+    [-1,-1]
 ]
-console.log(directions)
-let string = input.replace(/\n/g,"");
-let POI = string.matchAll(/[^\s\d.]/g) 
-for (let indicator of POI) {
-    console.log(indicator)
-    for (let direction of directions) {
-        let index = indicator.index + direction;
-        if(index > string.length-1 || index < 0) continue;
 
-        let probed = string[index];
-        console.log(probed,index)
-        if (!probed.match(/\d/g)) continue;
-        let numbers = input.matchAll(/\d+/g);
-        for (let number of numbers) {
-            if (index >= number.index && index <= number.index + number[0].length && !parts.includes(number.index)) {
-                parts.push(number.index); 
-                sum += parseInt(number[0]);
-            }
+let rows = input.split("\n")
+
+for(let i=0;i<rows.length;i++){
+    let symbols = rows[i].matchAll(/[^\s\d.]/g)
+    let digits = rows[i].matchAll(/\d/g)
+    for(let symbol of symbols){
+        for(let direction of directions){
+            if (!rows[i+direction[1]]) continue
+            if (!rows[i+direction[1]][symbol.index+direction[0]]) continue
+            let check = rows[i+direction[1]][symbol.index+direction[0]]
+            console.log(symbol[0],check)
         }
     }
 }
-console.log(sum,parts)
