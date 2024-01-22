@@ -44,8 +44,7 @@ for(let i=0;i<rows.length;i++){
     let digits = rows[i].matchAll(/\d/g)
     for(let symbol of symbols){
         for(let direction of directions){
-            if (!rows[i+direction[1]]) continue
-            if (!rows[i+direction[1]][symbol.index+direction[0]]) continue
+            if (!rows[i+direction[1]] || !rows[i+direction[1]][symbol.index+direction[0]]) continue
             let check = rows[i+direction[1]][symbol.index+direction[0]]
             console.log(symbol[0],check)
         }
