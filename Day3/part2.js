@@ -1,26 +1,3 @@
-//pain
-
-
-// .....24.*23.
-// ..10........
-// ..397*.610..
-// .......50...
-// 1*2..4......
-//idk
-
-// 12.......*..
-// +.........34
-// .......-12..
-// ..78........
-// ..*....60...
-// 78.........9
-// .5.....23..$
-// 8...90*12...
-// ............
-// 2.2......12.
-// .*.........*
-// 1.1..503+.56
-//Part 1: 925
 const input =
 `...317..........214.....................................751.................................630...479..205....41.993............416.........
 ...*....813........%....572........%...629.154......518....*....365..................-.......*.......#.....................422...........661
@@ -191,25 +168,7 @@ const rows = input.split("\n");
 let sum = 0;
 let previousIndexed = [];
 for (let i = 0; i < rows.length; i++) {
-    let digits = rows[i].matchAll(/\d+/g);
-    for (let digit of digits) {
-        for (let direction of directions) {
-            const yRow = i + direction[1];
-            const row = rows[yRow];
-            if (row == null) continue;
-            for (let char = 0, charLen = digit[0].length; char < charLen; char++) {
-                const check = row[digit.index+char+direction[0]];
-                if(check == null) continue;
-                let matches = check.match(/[^\d\s.]/g);
-                const key = check+digit[0]+":"+digit.index+charLen;
-                if(matches && previousIndexed.includes(key) === false){
-                    previousIndexed.push(key);
-                    sum += parseInt(digit[0]);
-                    console.log(key)
-                }
-            }
-        }
-    }
-
+    let row = rows[i]
+    let gears = rows[row]
 }
 console.log(sum);
