@@ -1,5 +1,5 @@
 const input =
-`seeds: 1187290020 247767461 40283135 64738286 2044483296 66221787 1777809491 103070898 108732160 261552692 3810626561 257826205 3045614911 65672948 744199732 300163578 3438684365 82800966 2808575117 229295075
+    `seeds: 1187290020 247767461 40283135 64738286 2044483296 66221787 1777809491 103070898 108732160 261552692 3810626561 257826205 3045614911 65672948 744199732 300163578 3438684365 82800966 2808575117 229295075
 
 seed-to-soil map:
 1716002126 3982609232 32819234
@@ -245,8 +245,8 @@ seeds.forEach(seed => {
     seed = parseInt(seed);
     string.forEach(segment => {
         for (const i of segment.matchAll(/\d+ \d+ \d+/g)) {
-            let [dest, source, sourcelen] = i[0].split(" ").map(x=>{return parseInt(x)});
-            if (seed >= source && seed <= source+sourcelen) {
+            let [dest, source, sourcelen] = i[0].split(" ").map(x => { return parseInt(x) });
+            if (seed >= source && seed <= source + sourcelen) {
                 seed += dest - source
                 break
             }
