@@ -140,19 +140,8 @@ const input =
 ........................153.........-........@.....*...661..*833......*.775.....-...........................40....665...............701.....
 ..890....252......................544........809..425..............925......................................................................
 `;
-//Solution 1
-//4361 sum of numbers adjacent to symbols excluding periods
-//ten a row
-//could lay out as line and check using math
-// if index 13 | above = 3 (-10 = -row), below = 23 (+10 = row), diagupleft = 2 (-11 = -row#-1), diagupright = 4 (-9 = -row#+1), etc...
-// make flexible real data is 140 chars a row
-// make a list of all possible part numbers positions and compare with directions
-//edge case if numbers wrap around etc 300\n200 would turn into 300200
-//Solution 2
-//split into rows from each /n
-//split each string from the rows into seperate chars in the array
-//  ["1...2-1.","123.+2"]
-// New solution is checking around the digits for symbols
+//467835
+
 let directions = [
     [0, 1],  //right
     [0, -1], //left
@@ -164,11 +153,42 @@ let directions = [
     [-1, -1] // down left
 ]
 
+function isDigit(n) {
+    return isFinite(parseInt(n));
+}
+let indexed = {}
 const rows = input.split("\n");
+for (let i = 0, rl = rows.length; i < rl; i++) {
+    let matchedGear = rows[i].matchAll(/\*/g)
+    for (const gear of matchedGear) {
+        for (const direction of directions) {
+            if (!rows[i + direction[1]] || !rows[i + direction[1]][gear.index + direction[0]]) continue;
+            let char = rows[i + direction[1]][gear.index + direction[0]];
+            if (isDigit(char)) {
+                for (const digit of rows[i + direction[1]].matchAll(/\d+/g)) {
+                    let key = gear[0] + gear.index + gear.input
+                    if (digit.index <= gear.index + direction[0] && digit.index + digit[0].length > gear.index + direction[0]) {
+                        indexed[key] == null ? indexed[key] = new Set([digit.index + i + ":" + digit[0]]) : indexed[key].add(digit.index + i + ":" + digit[0]);
+                        // console.log(digit);
+                    }
+                }
+                // console.log(gear.input, "\n" + rows[i + direction[1]], char);
+            }
+        }
+    }
+}
+function reduceGearRatio(ratios) {
+    return ratios.map(keyValue => {
+        return keyValue.split(":")[1]
+    }).reduce((previous, current) => {
+        return previous * current
+    })
+}
 let sum = 0;
-let previousIndexed = [];
-for (let i = 0; i < rows.length; i++) {
-    let row = rows[i]
-    let gears = rows[row]
+for (const ratios of Object.values(indexed)) {
+    let ratioArray = [...ratios];
+    if(ratioArray.length >= 2){
+        sum += reduceGearRatio(ratioArray);
+    }
 }
 console.log(sum);
