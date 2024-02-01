@@ -32,7 +32,7 @@ temperature-to-humidity map:
 humidity-to-location map:
 60 56 37
 56 93 4`
-
+let test = 82;
 let string = input.split(/\n\n/g);
 let seeds = string[0].match(/\d+/g);
 string.shift();
