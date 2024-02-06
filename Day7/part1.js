@@ -6,7 +6,44 @@ KTJJT 220
 QQQJA 483`
 
 
-let cards = "AKQJT98765432"
+let cards = "AKQJT98765432";
 
 let e = input.split("\n").map(x=>x.split(" "));
-console.log(e);
+
+let hands = {}
+for(const cardset of e){
+    let hand = cardset[0];
+    let repeats = {};
+    for (let i = 0, len = hand.length; i < len; i++) {
+        repeats[hand[i]] = repeats[hand[i]] == null ? 1 : repeats[hand[i]]+=1
+    }
+    
+    for(const [key, value] of Object.entries(repeats)){
+        switch (value) {
+            case 5:
+                hands[hand] = 7
+                console.log("5 o kind")
+                break;
+            case 4:
+                hands[hand] = 6
+                console.log("4 o kind")
+                break;
+            case 3:
+                let cardCount = Object.keys(repeats).length;
+                if(cardCount === 3){
+                    hands[hand] = 4
+                }else if(cardCount === 2){
+                    hands[hand] = 5
+                }
+                console.log("3 card")
+                break;
+            case 2:
+                break;
+            default:
+                break;
+        }
+    }
+    //console.log();
+
+}
+console.log(hands);
