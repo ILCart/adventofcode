@@ -17,7 +17,7 @@ for(const cardset of e){
     for (let i = 0, len = hand.length; i < len; i++) {
         repeats[hand[i]] = repeats[hand[i]] == null ? 1 : repeats[hand[i]]+=1
     }
-    
+    let cardCount = Object.keys(repeats).length;
     for(const [key, value] of Object.entries(repeats)){
         switch (value) {
             case 5:
@@ -29,7 +29,6 @@ for(const cardset of e){
                 console.log("4 o kind")
                 break;
             case 3:
-                let cardCount = Object.keys(repeats).length;
                 if(cardCount === 3){
                     hands[hand] = 4
                 }else if(cardCount === 2){
@@ -38,6 +37,11 @@ for(const cardset of e){
                 console.log("3 card")
                 break;
             case 2:
+                if(cardCount === 4){
+                    hands[hand] = 1
+                }else if(cardCount === 3){
+                    hands[hand] = 2
+                }              
                 break;
             default:
                 break;
