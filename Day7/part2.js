@@ -1023,22 +1023,21 @@ function classify(repeats) {
     repeats.delete("J")
     let reps = [...repeats.values()];
     reps.sort((a,b)=>b-a);
-    console.log(reps)
-    if(reps[0] + jokers == 5) return 7
-    if(reps[0] + jokers == 4) return 6
-    if(reps[0] + jokers == 3 && reps.length >= 2) return 5
-    if(reps[0] + jokers == 3) return 4
-    if(reps.includes(2) && (jokers == 2 || reps.length == 3)) return 3
-    if (reps.includes(2) && (reps.length == 4 || jokers == 2)) return 2
-
-
+    //console.log(reps)
+    let highreps = reps[0] || 0;;
+    if(highreps + jokers == 5) return 6;
+    if(highreps + jokers == 4) return 5;
+    if(highreps + jokers == 3 && reps.includes(2,1)) return 4;
+    if(highreps + jokers == 3) return 3;
+    if(highreps == 2 && (jokers == 2 || reps.includes(2,1))) return 2;
+    if ((highreps == 2 || jokers == 2) || (highreps + jokers == 2))  return 1;
+    return 0;
     // if (reps.includes(5)) return 7
     // if (reps.includes(4)) return 6
     // if (reps.includes(3) && reps.includes(2)) return 5
     // if (reps.includes(3) && reps.length == 3) return 4
     // if (reps.includes(2) && reps.length == 3) return 3
     // if (reps.includes(2) && reps.length == 4) return 2
-    return 1
 }
 let ranked = {};
 let hands = {};
@@ -1066,7 +1065,8 @@ let sorted = [...Object.keys(ranked)].sort((a, b) => {
     if (ranked[a] < ranked[b]) {
         return 1
     }
-    if (getStrength(a, b)) {
+    console.log(getStrength(a, b),a,b)
+    if (getStrength(a, b) && ranked[a] == ranked[b]) {
         return -1
     }
     return 1
