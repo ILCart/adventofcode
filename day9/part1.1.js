@@ -220,18 +220,19 @@ function sequence(seq,last=[seq.map(x=>+x)]){
     return last
 }
 
-function extrapolate_backwards(seq){
+function extrapolate(seq){
     
+    seq[0].push(0);
     let previous = 0;
     for (const pattern of seq) {
-        let first = pattern[0];
-        previous = first - previous;
+        let last = pattern[pattern.length-1]
+        previous = last + previous;
     }
     return previous
 }
 
 
 let total = histories.reduce((a,b)=>{
-    return a += extrapolate_backwards(sequence(b).reverse())
+    return a += extrapolate(sequence(b).reverse())
 },0)
 console.log(total)
