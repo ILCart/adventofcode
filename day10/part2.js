@@ -22,6 +22,8 @@ let lines = input.split("\n");
 // . is ground; there is no pipe in this tile.
 // S is the starting position of the animal; there is a pipe on this tile, but your sketch doesn't show what shape the pipe has.
 
+const intersection = (a,b)=>new Set([...a].filter(i => b.has(i)));
+const diff = (A,B) => new Set([...A].filter(x => ![...B].includes(x)));
 
 
 let visited = new Set;
@@ -54,7 +56,7 @@ while (prev.size != 0){
     var current = new Set;
     for(let cord of prev.values()){
         for(let cord2 of grid.get(cord).values()){
-            if(!visited.has(cord2) && grid.get(cord2) && grid.get(cord2).intersection(prev).size > 0){
+            if(!visited.has(cord2) && grid.get(cord2) && intersection(grid.get(cord2),prev).size > 0){
                 // console.log("instersection",cord,cord2)
                 current.add(cord2);
                 visited.add(cord2);
@@ -81,13 +83,14 @@ let line_min_max = line => [Math.min(...line),Math.max(...line)];
 
 function ray_y_intersections(point,poly){
     let [x,y] = point;
-    let line = poly[x];
+    console.log(`(${x} ,${y})`);
+    let line = [...poly].map(a=>a.split(" ").map(x=>+x)).filter(a=>a[0]==x);
     if(!line) return 2;
-    let [min_y,max_y] = line_min_max(line);
+    let [min_y,max_y] = line_min_max(line.map(x=>x[1]));
     // console.log(`${min_y} ${max_y} | ${x} ${y} | ${line.length} ${line}`)
     // console.log(line,min_y,max_y,line.length)
 
-    // if(y>max_y || y<min_y) return 2;
+    if(y>max_y || y<min_y) return 2;
     let intersections = 0;
     for (let i = y; i > 0; i--) {
         // console.log(`(${x} ,${y})`,line);
@@ -102,20 +105,15 @@ function ray_y_intersections(point,poly){
 
 let poly = [];
 visited.forEach(cord=>{
-    let [x,y] = cord.split(" ");
-    if(poly[x]){
-        poly[x][y] = +y;
-    }else{
-        poly[x] = [];
-        poly[x][y] = +y;
-    }
+    let [x,y] = cord.split(" ").map(x=>+x);
+    // console.log(`(${x} ,${y})`);
+
 })
 let tot = 0;
-graph.difference(visited).forEach(a=>{
+diff(graph,visited).forEach(a=>{
     let [x,y] = a.split(" ");
-    let sect = ray_y_intersections([x,y],poly);
-    if(sect%2==1) tot++;
-    // console.log(`(${x} ,${y})`)^^
+    let sect = ray_y_intersections([x,y],diff(graph,visited));
+    // if(sect%2==1) tot++;
 })
 console.log(tot)
 // for (let x = 0; x < poly.length; x++) {
