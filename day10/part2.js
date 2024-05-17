@@ -1,14 +1,10 @@
 let input = `
-.F----7F7F7F7F-7....
-.|F--7||||||||FJ....
-.||.FJ||||||||L7....
-FJL7L7LJLJ||LJ.L-7..
-L--J.L7...LJS7F-7L7.
-....F-J..F7FJ|L7L7L7
-....L7.F7||L7|.L7L7|
-.....|FJLJ|FJ|F7|.LJ
-....FJL-7.||.||||...
-....L---J.LJ.LJLJ...`;
+7-F7-
+.FJ|7
+SJLL7
+|F--J
+LJ.LJ
+`;
 input = input.trim();
 
 let lines = input.split("\n");
@@ -28,8 +24,10 @@ let lines = input.split("\n");
 let visited = new Set;
 let grid = new Map;
 let prev = new Set;
+let mapped = [];
 for (let x = 0; x < lines.length; x++) {
     let line = lines[x];
+    mapped[x] = line.split("");
     for (let y = 0; y < line.length; y++) {
         let char = line[y];
         let transversable = new Set;
@@ -62,19 +60,19 @@ while (true) {
 }
 let polygon = new Set;
 let not_visited = new Set;
-for (const [key,value] of grid.entries()) {
-    if(value.size <= 0) not_visited.add(key);
-    if(value.size > 0) polygon.add(key);
+for (const [key, value] of grid.entries()) {
+    if (value.size <= 0) not_visited.add(key);
+    if (value.size > 0) polygon.add(key);
 }
 
 
-let vertex_poly = [...polygon].map(x=>x.split(" ").map(n=>+n))
+let vertex_poly = [...polygon].map(x => x.split(" ").map(n => +n))
 let array_2d_poly = [];
 for (const point of vertex_poly) {
     let new_line = array_2d_poly[point[0]];
-    if(new_line){
+    if (new_line) {
         new_line.push(point[1]);
-    }else{
+    } else {
         array_2d_poly[point[0]] = [point[1]]
     }
 }
@@ -82,36 +80,85 @@ for (const point of vertex_poly) {
 
 // Time to ball
 // Using point in polygon computational geometry
-let line_min_max = line => [Math.min(...line),Math.max(...line)];
+let line_min_max = line => [Math.min(...line), Math.max(...line)];
 
-function ray_y_intersections(point,poly){
-    let [x,y] = point;
+function ray_y_intersections(point, poly) {
+    let [x, y] = point;
     let line = poly[x];
-    if(!line) return [];
-    let [min_y,max_y] = line_min_max(line);
+    if (!line) return [];
+    let [min_y, max_y] = line_min_max(line);
     // console.log(`${min_y} ${max_y} | ${x} ${y} | ${line.length} ${line}`)
 
-    if(y>max_y || y<min_y) return [];
+    if (y > max_y || y < min_y) return [];
     let intersections = [];
     for (let i = y; i > 0; i--) {
-        if(line.includes(i) && `${x} ${i}` !== `${x} ${y}`){
-            intersections.push([x,i]);
+        if (line.includes(i) && `${x} ${i}` !== `${x} ${y}`) {
+            // console.log(`${x} ${y} | ${x} ${i} | ${line.length} ${line}`)
+            intersections.push([x, i]);
         }
     }
-    
+
+
     return intersections;
 }
 
+// Area - b/2 + 1
+
+let odd = x => x % 2 == 1;
+let outside = new Set;
+
+for (let row = 0; row < mapped.length; row++) {
+
+    let inside = false;
+    let up = "";
+    for (let i = 0; i < mapped[row].length; i++) {
+        const ch = mapped[row][i];
+        switch (ch) {
+            case "|":
+                if (up == "") inside = !inside;
+                break;
+            case "-":
+                if (up !== "") { }
+                break;
+            case "L":
+                if (up == "") up = ch == "L";
+                break;
+            case "F":
+                if (up == "") up = ch == "L";
+                break;
+            case "7":
+                if (up !== "") up = ch == "L";
+                if (ch != (up ? "J" : "7")) {
+                    inside = !inside;
+                }
+                up = "";
+                break;
+            case "J":
+                if (up !== "") up = ch == "L";
+                if (ch != (up ? "J" : "7")) {
+                    inside = !inside;
+                }
+                up = "";
+                break;
+            case ".":
+                break
+            default:
+                console.error("dude what",ch)
+                break;
+        }
+        if(!inside) outside.add([row,i]);
 
 
-let odd = x => x%2==1; 
-let inside = 0;
-not_visited.forEach(x=>{
-    let sect = ray_y_intersections(x.split(" "),array_2d_poly);
-    // console.log(sect,x)
+    }
 
-})
-console.log(inside);
+}
+// let inside = 0;
+// not_visited.forEach(x=>{
+//     let sect = ray_y_intersections(x.split(" "),array_2d_poly);
+//     // console.log(sect,x)
+
+// })
+// console.log(inside);
 // polygon.forEach(x=>{
 //     let [a,b] = x.split(" ");
 //     console.log(`(${b}, -${a})`);
