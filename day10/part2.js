@@ -137,8 +137,7 @@ FF7.JJL-J7|7L-J7J7F||.F|.-F.|FJF--|77-LL7J|.FFF--J|||F7|F|7LJ-||F-7L-JFF--J||L-7
 L7L-7J-7F-7FL--JJ.LF.FFL-|L-|-JF7LLLJ|L--JJFFJLJLJ-|F-7F7FJ.L-7J|LLLL---J||7L||LL7F|J|LLJL|----L|||J7J-LJ.L||.|L7|||FFJFJ-|-7-----77L77|...|
 |F7JLJJF|--|||.J-7-J--7JFJ7.-7LJ77||-LFJ-7--||L|J7.|L7LJ||--J|F.|..|L|JF|LJ7L||-7LLJF7-L77L-J-77F|||7JFFFJ7LJ-L-JLJF-|F|F||..|-..F-7-||L----
 FJ||LLF-77.-|LF|-L.||LL.7JFL.F-L-7-L-.L.F-FJ.FFJJF-L-JJFJL7JFFL-|-L-7|.F7FJJ-LJ7L77.L-F-LL7JF--||LJJ--F-7L|JLLL-FJJF-|-F|-.-LL-77|.7.J-|..||
-FL--7.LLJ-JL7-FFJLF-J-|-F-7J-F.L|.|LJ---L-L7.-FJJL7JL..L--J-|L|.7--L|L-FJ|JJ-L.L-L-F-L|-LL7-JJ.LLFJ-|LLJLJ.JJLJ77J--.-.LL--JLJL|-LLJ7JL-J.-7
-`;
+FL--7.LLJ-JL7-FFJLF-J-|-F-7J-F.L|.|LJ---L-L7.-FJJL7JL..L--J-|L|.7--L|L-FJ|JJ-L.L-L-F-L|-LL7-JJ.LLFJ-|LLJLJ.JJLJ77J--.-.LL--JLJL|-LLJ7JL-J.-7`
 input = input.trim();
 
 let lines = input.split("\n");
@@ -159,6 +158,7 @@ const diff = (a, b) => new Set([...a].filter(x => ![...b].includes(x)));
 let visited = new Set;
 let grid = new Map;
 let prev = new Set;
+
 let graph = new Set;
 let xlen = lines.length, ylen = lines[0].length;
 for (let x = 0; x < xlen; x++) {
@@ -211,11 +211,10 @@ function shoelace(set){
         before = [+x,+y]
         n++
     }
-    // set.forEach(xy => {
-        
-    // })
+
     return -total/2;
 }
+
 
 function turn_to_cw(set){
     let set_values = [...set.values()]
@@ -234,3 +233,4 @@ let area = shoelace(turn_to_cw(visited));
 let bounds = visited.size/2;
 let internal = area - (bounds-1);
 console.log(internal);
+
